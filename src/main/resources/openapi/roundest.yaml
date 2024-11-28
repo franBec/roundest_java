@@ -148,8 +148,8 @@ components:
         name:
           description: Pokemon name
           example: Bulbasaur
-          format: string
           maxLength: 10
+          type: string
         votes:
           description: Pokemon current votes as "the roundest"
           example: 1

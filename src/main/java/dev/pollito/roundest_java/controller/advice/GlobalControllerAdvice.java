@@ -3,6 +3,7 @@ package dev.pollito.roundest_java.controller.advice;
 import io.opentelemetry.api.trace.Span;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ public class GlobalControllerAdvice {
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ProblemDetail handle(@NotNull MethodArgumentTypeMismatchException e) {
     return buildProblemDetail(e, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NoSuchElementException.class)
+  public ProblemDetail handle(@NotNull NoSuchElementException e) {
+    return buildProblemDetail(e, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(Exception.class)

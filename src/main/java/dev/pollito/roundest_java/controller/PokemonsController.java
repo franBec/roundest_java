@@ -4,25 +4,39 @@ import dev.pollito.roundest_java.api.PokemonsApi;
 import dev.pollito.roundest_java.model.PokemonSortProperty;
 import dev.pollito.roundest_java.model.Pokemons;
 import dev.pollito.roundest_java.model.SortDirection;
+import dev.pollito.roundest_java.service.PokemonService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class PokemonsController implements PokemonsApi {
+  private final PokemonService pokemonService;
+
   @Override
   public ResponseEntity<Pokemons> findAll(
       Integer pageNumber,
       Integer pageSize,
-      PokemonSortProperty sortProperty,
-      SortDirection sortDirection,
+      @NotNull PokemonSortProperty sortProperty,
+      @NotNull SortDirection sortDirection,
       Boolean random) {
-    return PokemonsApi.super.findAll(pageNumber, pageSize, sortProperty, sortDirection, random);
+    return ResponseEntity.ok(
+        pokemonService.findAll(
+            PageRequest.of(
+                pageNumber,
+                pageSize,
+                Sort.Direction.fromString(sortDirection.getValue()),
+                sortProperty.getValue()),
+            random));
   }
 
   @Override
   public ResponseEntity<Void> incrementPokemonVotes(Long id) {
-    return PokemonsApi.super.incrementPokemonVotes(id);
+    return new ResponseEntity<>(pokemonService.incrementPokemonVotes(id), HttpStatus.NO_CONTENT);
   }
 }
