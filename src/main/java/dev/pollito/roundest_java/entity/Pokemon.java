@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "pokemons")
+@Table(name = "pokemons", schema = "dbo")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,9 +27,9 @@ public class Pokemon implements Serializable {
   @Column(name = "id")
   Long id;
 
-  @Column(name = "name", nullable = false, length = 10, updatable = false)
+  @Column(name = "name", nullable = false, length = 10, updatable = false, unique = true)
   String name;
 
   @Column(name = "votes", nullable = false)
-  int votes;
+  int votes = 0;
 }
