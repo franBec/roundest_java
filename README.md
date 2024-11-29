@@ -18,11 +18,11 @@ The OpenAPI documentation for the API can be found in the [src/main/resources/op
 ### Run with Maven
 1. Clone the repository:
     ```bash
-    git clone https://github.com/franBec/user_manager_backend
+    git clone https://github.com/franBec/roundest_java
     ```
 2. Navigate to the project directory:
     ```bash
-    cd user_manager_backend
+    cd roundest_java
     ```
 3. Build and run the application using Maven:
     ```bash
@@ -31,19 +31,19 @@ The OpenAPI documentation for the API can be found in the [src/main/resources/op
 ### Run with Docker
 1. Clone the repository:
      ```bash
-     git clone https://github.com/franBec/user_manager_backend
+     git clone https://github.com/franBec/roundest_java
      ```
 2. Navigate to the project directory:
     ```bash
-    cd user_manager_backend
+    cd roundest_java
     ```
 3. Build the Docker image:
     ```bash
-    docker build -t user_manager_backend .
+    docker build -t roundest_java .
     ```
 4. Run the Docker container:
      ```bash
-     docker run -p 8080:8080 user_manager_backend
+     docker run -p 8080:8080 roundest_java
      ```
 
 ## Author
