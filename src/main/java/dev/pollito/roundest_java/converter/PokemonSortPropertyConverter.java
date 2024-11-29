@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserSortPropertyConverter implements Converter<String, PokemonSortProperty> {
+public class PokemonSortPropertyConverter implements Converter<String, PokemonSortProperty> {
   @Override
   public PokemonSortProperty convert(@NotNull String source) {
     return PokemonSortProperty.fromValue(source);
