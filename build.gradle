@@ -5,6 +5,14 @@ plugins {
 	id 'org.openapi.generator' version '7.10.0'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated/sources/openapi/src/main/java")
+        }
+    }
+}
+
 group = 'dev.pollito'
 version = '0.0.1-SNAPSHOT'
 
@@ -69,5 +77,5 @@ openApiGenerate {
     generatorName = "spring"
     inputSpec = "$rootDir/src/main/resources/openapi/roundest.yaml".toString()
     modelPackage = "${group}.${project.name}.model".toString()
-    outputDir = "$buildDir/generated/openapi".toString()
+    outputDir = "$buildDir/generated/sources/openapi".toString()
 }
