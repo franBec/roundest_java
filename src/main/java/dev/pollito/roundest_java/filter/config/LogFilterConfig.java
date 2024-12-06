@@ -1,4 +1,4 @@
-package dev.pollito.roundest_java.config;
+package dev.pollito.roundest_java.filter.config;
 
 import dev.pollito.roundest_java.filter.LogFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
