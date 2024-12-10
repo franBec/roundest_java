@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +34,10 @@ class PokemonServiceTest {
   private PokemonModelMapper pokemonModelMapper = Mappers.getMapper(PokemonModelMapper.class);
 
   @Test
-  void whenFindAllNotRandomThenReturnPokemons() {
+  void whenFindAllThenReturnPokemons() {
     when(pokemonRepository.findAll(any(PageRequest.class)))
         .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
-    assertNotNull(pokemonService.findAll(mock(PageRequest.class), false));
+    assertNotNull(pokemonService.findAll(null, mock(PageRequest.class), false));
   }
 
   @Test
@@ -46,7 +47,19 @@ class PokemonServiceTest {
     PageRequest pageRequest = mock(PageRequest.class);
     when(pageRequest.getPageSize()).thenReturn(2);
 
-    assertNotNull(pokemonService.findAll(pageRequest, true));
+    assertNotNull(pokemonService.findAll(null, pageRequest, true));
+  }
+
+  @Test
+  void whenFindAllWithNameThenReturnPokemons() {
+    when(pokemonRepository.findByNameContainingIgnoreCase(anyString(), any(PageRequest.class))).thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
+    assertNotNull(pokemonService.findAll("abra", mock(PageRequest.class), false));
+  }
+
+  @Test
+  void whenFindByIdThenReturnPokemon() {
+    when(pokemonRepository.findById(anyLong())).thenReturn(Optional.of(mock(Pokemon.class)));
+    assertNotNull(pokemonService.findById(1L));
   }
 
   @Test

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +28,19 @@ public class PokemonServiceImpl implements PokemonService {
   private final PokemonModelMapper pokemonModelMapper;
 
   @Override
-  public Pokemons findAll(PageRequest pageRequest, Boolean random) {
+  public Pokemons findAll(String name, PageRequest pageRequest, Boolean random) {
     if (Boolean.TRUE.equals(random)) {
       return getRandomPokemons(pageRequest.getPageSize());
+    }
+    if (StringUtils.hasText(name)) {
+      return pokemonModelMapper.map(pokemonRepository.findByNameContainingIgnoreCase(name, pageRequest));
     }
     return pokemonModelMapper.map(pokemonRepository.findAll(pageRequest));
   }
 
-  private Pokemons getRandomPokemons(int size) {
-    List<Pokemon> pokemons = pokemonRepository.findByIds(generateRandomIds(size));
-    return pokemonModelMapper.map(
-        new PageImpl<>(pokemons, PageRequest.of(0, size), pokemons.size()));
+  @Override
+  public dev.pollito.roundest_java.model.Pokemon findById(Long id) {
+    return pokemonModelMapper.map(pokemonRepository.findById(id).orElseThrow());
   }
 
   @Override
@@ -47,6 +50,12 @@ public class PokemonServiceImpl implements PokemonService {
     pokemon.setVotes(pokemon.getVotes() + 1);
     pokemonRepository.save(pokemon);
     return null;
+  }
+
+  private Pokemons getRandomPokemons(int size) {
+    List<Pokemon> pokemons = pokemonRepository.findByIds(generateRandomIds(size));
+    return pokemonModelMapper.map(
+        new PageImpl<>(pokemons, PageRequest.of(0, size), pokemons.size()));
   }
 
   @Contract("_ -> new")

@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import dev.pollito.roundest_java.model.Pokemon;
 import dev.pollito.roundest_java.model.PokemonSortProperty;
 import dev.pollito.roundest_java.model.Pokemons;
 import dev.pollito.roundest_java.model.SortDirection;
@@ -29,11 +31,19 @@ class PokemonsControllerTest {
 
   @Test
   void whenFindAllThenOk() {
-    when(pokemonService.findAll(any(PageRequest.class), anyBoolean()))
+    when(pokemonService.findAll(anyString(), any(PageRequest.class), anyBoolean()))
         .thenReturn(mock(Pokemons.class));
     ResponseEntity<Pokemons> response =
-        pokemonsController.findAll(0, 10, PokemonSortProperty.ID, SortDirection.ASC, true);
+        pokemonsController.findAll("Bulbasur",0, 10, PokemonSortProperty.ID, SortDirection.ASC, true);
 
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertNotNull(response.getBody());
+  }
+
+  @Test
+  void whenFindByIdThenReturnOK() {
+    when(pokemonService.findById(anyLong())).thenReturn(mock(Pokemon.class));
+    ResponseEntity<Pokemon> response = pokemonsController.findById(1L);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
   }
