@@ -20,7 +20,7 @@ paths:
       operationId: findAll
       parameters:
         - description:
-            Use this parameter to filter pokémon by checking if provided string
+            Pokémon filtering by checking if provided string
             is part of a name (all ignore case). If not used, no filtering will
             be done.
           in: query
@@ -29,7 +29,7 @@ paths:
             minLength: 3
             maxLength: 10
             type: string
-        - description: Use this parameter to specify the page of your request
+        - description: Zero-based page index (0..N)
           in: query
           name: pageNumber
           schema:
@@ -37,9 +37,7 @@ paths:
             minimum: 0
             maximum: 2147483647
             type: integer
-        - description:
-            Use this parameter to specify a pagination limit (number of results
-            per page) for your request
+        - description: Size of the page to be returned
           in: query
           name: pageSize
           schema:
@@ -47,22 +45,20 @@ paths:
             maximum: 10
             minimum: 1
             type: integer
-        - description:
-            Use this parameter to specify the property by which you want to sort
-            the results of your request
+        - description: >
+            Sorting criteria in the format `field:direction`.
+            Specify multiple sort criteria by repeating the `sort` query parameter.
+            For example: `?pageSort=votes:desc&pageSort=id:asc`.
+          explode: true
           in: query
-          name: sortProperty
+          name: pageSort
           schema:
-            $ref: "#/components/schemas/PokemonSortProperty"
+            default: [id:asc]
+            items:
+              type: string
+            type: array
         - description:
-            Use this parameter to specify the direction (asc or desc) of your
-            request results
-          in: query
-          name: sortDirection
-          schema:
-            $ref: "#/components/schemas/SortDirection"
-        - description:
-            when this parameter is true, will bring (pageSize) random results,
+            When this parameter is true, will bring (pageSize) random results,
             ignoring all other parameters except for pageSize
           in: query
           name: random
@@ -225,11 +221,3 @@ components:
           example: 10
           type: integer
       type: object
-    PokemonSortProperty:
-      enum: [id, name, votes]
-      default: id
-      type: string
-    SortDirection:
-      type: string
-      enum: [ASC, DESC]
-      default: ASC

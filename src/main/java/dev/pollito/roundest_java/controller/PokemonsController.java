@@ -2,17 +2,14 @@ package dev.pollito.roundest_java.controller;
 
 import dev.pollito.roundest_java.api.PokemonsApi;
 import dev.pollito.roundest_java.model.Pokemon;
-import dev.pollito.roundest_java.model.PokemonSortProperty;
 import dev.pollito.roundest_java.model.Pokemons;
-import dev.pollito.roundest_java.model.SortDirection;
 import dev.pollito.roundest_java.service.PokemonService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,17 +21,17 @@ public class PokemonsController implements PokemonsApi {
       String name,
       Integer pageNumber,
       Integer pageSize,
-      @NotNull PokemonSortProperty sortProperty,
-      @NotNull SortDirection sortDirection,
+      List<String> pageSort,
       Boolean random) {
     return ResponseEntity.ok(
         pokemonService.findAll(
             name,
-            PageRequest.of(
-                pageNumber,
-                pageSize,
-                Sort.Direction.fromString(sortDirection.getValue()),
-                sortProperty.getValue()), random));
+            pageNumber,
+            pageSize,
+            pageSort,
+            random
+        )
+    );
   }
 
   @Override

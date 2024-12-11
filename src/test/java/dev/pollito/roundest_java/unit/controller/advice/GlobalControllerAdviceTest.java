@@ -1,14 +1,17 @@
-package dev.pollito.roundest_java.controller.advice;
+package dev.pollito.roundest_java.unit.controller.advice;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.NoSuchElementException;
+
+import dev.pollito.roundest_java.controller.advice.GlobalControllerAdvice;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -49,6 +52,12 @@ class GlobalControllerAdviceTest {
   @Test
   void whenMethodArgumentTypeMismatchExceptionThenReturnProblemDetail() {
     MethodArgumentTypeMismatchException e = mock(MethodArgumentTypeMismatchException.class);
+    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
+  }
+
+  @Test
+  void whenPropertyReferenceExceptionThenReturnProblemDetail() {
+    PropertyReferenceException e = mock(PropertyReferenceException.class);
     problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
   }
 
