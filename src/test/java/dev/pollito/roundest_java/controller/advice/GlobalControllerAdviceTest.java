@@ -4,14 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.NoSuchElementException;
+
+import jakarta.validation.ConstraintViolationException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -29,6 +31,24 @@ class GlobalControllerAdviceTest {
   }
 
   @Test
+  void whenConstraintViolationExceptionThenReturnProblemDetail() {
+    ConstraintViolationException e = mock(ConstraintViolationException.class);
+    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
+  }
+
+  @Test
+  void whenExceptionThenReturnProblemDetail() {
+    Exception e = mock(Exception.class);
+    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @Test
+  void whenMethodArgumentTypeMismatchExceptionThenReturnProblemDetail() {
+    MethodArgumentTypeMismatchException e = mock(MethodArgumentTypeMismatchException.class);
+    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
+  }
+
+  @Test
   void whenNoResourceFoundExceptionThenReturnProblemDetail() {
     NoResourceFoundException e = mock(NoResourceFoundException.class);
     problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.NOT_FOUND);
@@ -41,20 +61,8 @@ class GlobalControllerAdviceTest {
   }
 
   @Test
-  void whenMethodArgumentNotValidExceptionThenReturnProblemDetail() {
-    MethodArgumentNotValidException e = mock(MethodArgumentNotValidException.class);
+  void whenPropertyReferenceExceptionThenReturnProblemDetail() {
+    PropertyReferenceException e = mock(PropertyReferenceException.class);
     problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
-  }
-
-  @Test
-  void whenMethodArgumentTypeMismatchExceptionThenReturnProblemDetail() {
-    MethodArgumentTypeMismatchException e = mock(MethodArgumentTypeMismatchException.class);
-    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.BAD_REQUEST);
-  }
-
-  @Test
-  void whenExceptionThenReturnProblemDetail() {
-    Exception e = mock(Exception.class);
-    problemDetailAssertions(globalControllerAdvice.handle(e), e, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

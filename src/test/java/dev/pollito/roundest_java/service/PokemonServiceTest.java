@@ -12,8 +12,11 @@ import dev.pollito.roundest_java.entity.Pokemon;
 import dev.pollito.roundest_java.mapper.PokemonModelMapper;
 import dev.pollito.roundest_java.repository.PokemonRepository;
 import dev.pollito.roundest_java.service.impl.PokemonServiceImpl;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -34,26 +37,44 @@ class PokemonServiceTest {
   private PokemonModelMapper pokemonModelMapper = Mappers.getMapper(PokemonModelMapper.class);
 
   @Test
-  void whenFindAllThenReturnPokemons() {
-    when(pokemonRepository.findAll(any(PageRequest.class)))
-        .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
-    assertNotNull(pokemonService.findAll(null, mock(PageRequest.class), false));
-  }
-
-  @Test
   void whenFindAllRandomThenReturnPokemons() {
     when(pokemonRepository.findByIds(anyList())).thenReturn(List.of());
 
-    PageRequest pageRequest = mock(PageRequest.class);
-    when(pageRequest.getPageSize()).thenReturn(2);
+    assertNotNull(pokemonService.findAll(
+        null,
+        0,
+        10,
+        Collections.emptyList(),
+        true
+    ));
+  }
 
-    assertNotNull(pokemonService.findAll(null, pageRequest, true));
+  @Test
+  void whenFindAllThenReturnPokemons() {
+    when(pokemonRepository.findAll(any(PageRequest.class)))
+        .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
+
+    assertNotNull(pokemonService.findAll(
+        null,
+        0,
+        10,
+        Collections.emptyList(),
+        false
+    ));
   }
 
   @Test
   void whenFindAllWithNameThenReturnPokemons() {
-    when(pokemonRepository.findByNameContainingIgnoreCase(anyString(), any(PageRequest.class))).thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
-    assertNotNull(pokemonService.findAll("abra", mock(PageRequest.class), false));
+    when(pokemonRepository.findByNameContainingIgnoreCase(anyString(), any(PageRequest.class)))
+        .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 10), 0));
+
+    assertNotNull(pokemonService.findAll(
+        "abra",
+        0,
+        10,
+        Collections.emptyList(),
+        false
+    ));
   }
 
   @Test

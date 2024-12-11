@@ -87,7 +87,8 @@ pitest {
     outputFormats = ['HTML']
     targetClasses = [
             "${group}.${project.name}.controller.*".toString(),
-            "${group}.${project.name}.service.*".toString()
+            "${group}.${project.name}.service.*".toString(),
+            "${group}.${project.name}.util.*".toString()
     ]
     targetTests = ["${group}.${project.name}.*".toString()]
     timestampedReports = false
