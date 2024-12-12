@@ -168,7 +168,6 @@ components:
           type: string
       type: object
     Pageable:
-      type: object
       properties:
         pageNumber:
           description: Current page number (starts from 0)
@@ -182,6 +181,21 @@ components:
           minimum: 0
           maximum: 2147483647
           type: integer
+      type: object
+    PaginationResponse:
+      properties:
+        content:
+          items: { }
+          type: array
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        totalElements:
+          default: 0
+          description: Total number of items that meet the criteria
+          example: 10
+          format: int64
+          type: integer
+      type: object
     Pokemon:
       properties:
         id:
@@ -209,15 +223,13 @@ components:
           type: integer
       type: object
     Pokemons:
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/Pokemon"
-        pageable:
-          $ref: "#/components/schemas/Pageable"
-        totalElements:
-          description: Total number of items that meet the criteria
-          example: 10
-          type: integer
+      allOf:
+        - $ref: "#/components/schemas/PaginationResponse"
+        - type: object
+          properties:
+            content:
+              default: []
+              items:
+                $ref: "#/components/schemas/Pokemon"
+              type: array
       type: object
