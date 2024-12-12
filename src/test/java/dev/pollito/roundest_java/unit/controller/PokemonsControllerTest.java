@@ -1,4 +1,4 @@
-package dev.pollito.roundest_java.controller;
+package dev.pollito.roundest_java.unit.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import dev.pollito.roundest_java.controller.PokemonsController;
 import dev.pollito.roundest_java.model.Pokemon;
 import dev.pollito.roundest_java.model.Pokemons;
 import dev.pollito.roundest_java.service.PokemonService;
