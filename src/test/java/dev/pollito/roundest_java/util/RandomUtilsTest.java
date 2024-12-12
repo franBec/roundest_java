@@ -1,6 +1,5 @@
 package dev.pollito.roundest_java.util;
 
-
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
