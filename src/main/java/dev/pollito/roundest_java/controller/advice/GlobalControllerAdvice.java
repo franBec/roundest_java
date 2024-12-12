@@ -4,11 +4,13 @@ import io.opentelemetry.api.trace.Span;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
+
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -18,14 +20,14 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 public class GlobalControllerAdvice {
 
-  @ExceptionHandler(NoResourceFoundException.class)
-  public ProblemDetail handle(@NotNull NoResourceFoundException e) {
-    return buildProblemDetail(e, HttpStatus.NOT_FOUND);
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ProblemDetail handle(@NotNull ConstraintViolationException e) {
+    return buildProblemDetail(e, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ProblemDetail handle(@NotNull MethodArgumentNotValidException e) {
-    return buildProblemDetail(e, HttpStatus.BAD_REQUEST);
+  @ExceptionHandler(Exception.class)
+  public ProblemDetail handle(@NotNull Exception e) {
+    return buildProblemDetail(e, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -33,14 +35,19 @@ public class GlobalControllerAdvice {
     return buildProblemDetail(e, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ProblemDetail handle(@NotNull NoResourceFoundException e) {
+    return buildProblemDetail(e, HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(NoSuchElementException.class)
   public ProblemDetail handle(@NotNull NoSuchElementException e) {
     return buildProblemDetail(e, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(Exception.class)
-  public ProblemDetail handle(@NotNull Exception e) {
-    return buildProblemDetail(e, HttpStatus.INTERNAL_SERVER_ERROR);
+  @ExceptionHandler(PropertyReferenceException.class)
+  public ProblemDetail handle(@NotNull PropertyReferenceException e){
+    return  buildProblemDetail(e, HttpStatus.BAD_REQUEST);
   }
 
   @NotNull

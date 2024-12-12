@@ -5,37 +5,46 @@ import dev.pollito.roundest_java.mapper.PokemonModelMapper;
 import dev.pollito.roundest_java.model.Pokemons;
 import dev.pollito.roundest_java.repository.PokemonRepository;
 import dev.pollito.roundest_java.service.PokemonService;
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
+
+import dev.pollito.roundest_java.util.PageableUtils;
+import dev.pollito.roundest_java.util.RandomUtils;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
 public class PokemonServiceImpl implements PokemonService {
-  private static final int POKEMON_ID_MIN = 1;
-  private static final int POKEMON_ID_MAX = 151;
-  private static final Random RANDOM = new Random();
   private final PokemonRepository pokemonRepository;
   private final PokemonModelMapper pokemonModelMapper;
 
   @Override
-  public Pokemons findAll(String name, PageRequest pageRequest, Boolean random) {
+  public Pokemons findAll(
+      String name,
+      Integer pageNumber,
+      Integer pageSize,
+      List<String> pageSort,
+      Boolean random
+  ) {
     if (Boolean.TRUE.equals(random)) {
-      return getRandomPokemons(pageRequest.getPageSize());
+      return getRandomPokemons(pageSize);
     }
+
+    Pageable pageable = PageableUtils.createPageable(
+        pageNumber,
+        pageSize,
+        pageSort
+    );
+
     if (StringUtils.hasText(name)) {
-      return pokemonModelMapper.map(pokemonRepository.findByNameContainingIgnoreCase(name, pageRequest));
+      return pokemonModelMapper.map(pokemonRepository.findByNameContainingIgnoreCase(name, pageable));
     }
-    return pokemonModelMapper.map(pokemonRepository.findAll(pageRequest));
+    return pokemonModelMapper.map(pokemonRepository.findAll(pageable));
   }
 
   @Override
@@ -53,17 +62,9 @@ public class PokemonServiceImpl implements PokemonService {
   }
 
   private Pokemons getRandomPokemons(int size) {
-    List<Pokemon> pokemons = pokemonRepository.findByIds(generateRandomIds(size));
+    List<Pokemon> pokemons = pokemonRepository.findByIds(RandomUtils.generateRandomIds(size));
     return pokemonModelMapper.map(
         new PageImpl<>(pokemons, PageRequest.of(0, size), pokemons.size()));
   }
 
-  @Contract("_ -> new")
-  private static @NotNull List<Long> generateRandomIds(int count) {
-    Set<Long> ids = new HashSet<>();
-    while (ids.size() < count) {
-      ids.add(POKEMON_ID_MIN + RANDOM.nextLong(POKEMON_ID_MAX));
-    }
-    return new ArrayList<>(ids);
-  }
 }
