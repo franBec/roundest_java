@@ -20,9 +20,8 @@ paths:
       operationId: findAll
       parameters:
         - description:
-            Pokémon filtering by checking if provided string
-            is part of a name (all ignore case). If not used, no filtering will
-            be done
+            Pokémon filtering by checking if provided string is part of a name
+            (all ignore case). If not used, no filtering will be done
           in: query
           name: name
           schema:
@@ -46,9 +45,9 @@ paths:
             minimum: 1
             type: integer
         - description: >
-            Sorting criteria in the format `field:direction`.
-            Specify multiple sort criteria by repeating the `sort` query parameter.
-            For example: `?pageSort=votes:desc&pageSort=id:asc`
+            Sorting criteria in the format `field:direction`. Specify multiple
+            sort criteria by repeating the `sort` query parameter. For example:
+            `?pageSort=votes:desc&pageSort=id:asc`
           explode: true
           in: query
           name: pageSort
@@ -185,10 +184,10 @@ components:
     PaginationResponse:
       properties:
         content:
-          items: { }
+          items: {}
           type: array
         pageable:
-          $ref: '#/components/schemas/Pageable'
+          $ref: "#/components/schemas/Pageable"
         totalElements:
           default: 0
           description: Total number of items that meet the criteria
