@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.util.Enumeration;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
+@Component
+@Order(2)
 @Slf4j
 public class LogFilter implements Filter {
 
