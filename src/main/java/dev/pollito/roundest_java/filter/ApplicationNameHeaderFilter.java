@@ -7,11 +7,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 @Component
 @Order(1)
@@ -23,7 +22,8 @@ public class ApplicationNameHeaderFilter implements Filter {
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
     if (response instanceof HttpServletResponse httpServletResponse) {
-      httpServletResponse.addHeader("X-Application-Name", springApplicationConfigurationProperties.getName());
+      httpServletResponse.addHeader(
+          "X-Application-Name", springApplicationConfigurationProperties.getName());
     }
     chain.doFilter(request, response);
   }

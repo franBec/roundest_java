@@ -1,4 +1,5 @@
 plugins {
+    id 'com.diffplug.spotless' version '6.25.0'
 	id 'java'
     id 'info.solidsoft.pitest' version '1.15.0'
     id 'io.spring.dependency-management' version '1.1.6'
@@ -52,7 +53,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'  
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named("build") {
+    dependsOn 'spotlessApply'
 }
 
 tasks.named('compileJava') {
@@ -93,4 +98,14 @@ pitest {
     targetTests = ["${group}.${project.name}.*".toString()]
     timestampedReports = false
     useClasspathFile = true
+}
+
+spotless {
+    java {
+        target 'src/*/java/**/*.java'
+        googleJavaFormat()
+        removeUnusedImports()
+        cleanthat()
+        formatAnnotations()
+    }
 }

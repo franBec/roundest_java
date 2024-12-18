@@ -1,11 +1,10 @@
 package dev.pollito.roundest_java.controller.advice;
 
 import io.opentelemetry.api.trace.Span;
+import jakarta.validation.ConstraintViolationException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
-
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -46,12 +45,11 @@ public class GlobalControllerAdvice {
   }
 
   @ExceptionHandler(PropertyReferenceException.class)
-  public ProblemDetail handle(@NotNull PropertyReferenceException e){
-    return  buildProblemDetail(e, HttpStatus.BAD_REQUEST);
+  public ProblemDetail handle(@NotNull PropertyReferenceException e) {
+    return buildProblemDetail(e, HttpStatus.BAD_REQUEST);
   }
 
-  @NotNull
-  private static ProblemDetail buildProblemDetail(@NotNull Exception e, HttpStatus status) {
+  @NotNull private static ProblemDetail buildProblemDetail(@NotNull Exception e, HttpStatus status) {
     String exceptionSimpleName = e.getClass().getSimpleName();
     log.error("{} being handled", exceptionSimpleName, e);
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, e.getLocalizedMessage());

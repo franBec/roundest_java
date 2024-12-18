@@ -5,11 +5,9 @@ import dev.pollito.roundest_java.mapper.PokemonModelMapper;
 import dev.pollito.roundest_java.model.Pokemons;
 import dev.pollito.roundest_java.repository.PokemonRepository;
 import dev.pollito.roundest_java.service.PokemonService;
-
-import java.util.List;
-
 import dev.pollito.roundest_java.util.PageableUtils;
 import dev.pollito.roundest_java.util.RandomUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,24 +23,16 @@ public class PokemonServiceImpl implements PokemonService {
 
   @Override
   public Pokemons findAll(
-      String name,
-      Integer pageNumber,
-      Integer pageSize,
-      List<String> pageSort,
-      Boolean random
-  ) {
+      String name, Integer pageNumber, Integer pageSize, List<String> pageSort, Boolean random) {
     if (Boolean.TRUE.equals(random)) {
       return getRandomPokemons(pageSize);
     }
 
-    Pageable pageable = PageableUtils.createPageable(
-        pageNumber,
-        pageSize,
-        pageSort
-    );
+    Pageable pageable = PageableUtils.createPageable(pageNumber, pageSize, pageSort);
 
     if (StringUtils.hasText(name)) {
-      return pokemonModelMapper.map(pokemonRepository.findByNameContainingIgnoreCase(name, pageable));
+      return pokemonModelMapper.map(
+          pokemonRepository.findByNameContainingIgnoreCase(name, pageable));
     }
     return pokemonModelMapper.map(pokemonRepository.findAll(pageable));
   }
@@ -66,5 +56,4 @@ public class PokemonServiceImpl implements PokemonService {
     return pokemonModelMapper.map(
         new PageImpl<>(pokemons, PageRequest.of(0, size), pokemons.size()));
   }
-
 }

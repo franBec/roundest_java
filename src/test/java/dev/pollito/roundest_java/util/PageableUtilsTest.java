@@ -1,15 +1,14 @@
 package dev.pollito.roundest_java.util;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 class PageableUtilsTest {
   @Test
@@ -27,10 +26,9 @@ class PageableUtilsTest {
 
   @Test
   void shouldDefaultToAscWhenNoDirectionIsProvided() {
-    Pageable pageable = PageableUtils.createPageable(0, 10,  List.of("name"));
+    Pageable pageable = PageableUtils.createPageable(0, 10, List.of("name"));
     assertTrue(Objects.requireNonNull(pageable.getSort().getOrderFor("name")).isAscending());
   }
-
 
   @Test
   void shouldAddIdSortIfNotProvided() {

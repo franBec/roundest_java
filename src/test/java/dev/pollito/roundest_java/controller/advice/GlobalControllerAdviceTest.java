@@ -3,9 +3,8 @@ package dev.pollito.roundest_java.controller.advice;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-import java.util.NoSuchElementException;
-
 import jakarta.validation.ConstraintViolationException;
+import java.util.NoSuchElementException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,10 +1,9 @@
 package dev.pollito.roundest_java.util;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class RandomUtilsTest {
   @Test
@@ -19,8 +18,8 @@ class RandomUtilsTest {
   }
 
   @Test
-  void shouldThrowIllegalArgumentExceptionWhenCountIsTooMuch(){
-    assertThrows(IllegalArgumentException.class, ()->RandomUtils.generateRandomIds(99));
+  void shouldThrowIllegalArgumentExceptionWhenCountIsTooMuch() {
+    assertThrows(IllegalArgumentException.class, () -> RandomUtils.generateRandomIds(99));
   }
 
   @Test

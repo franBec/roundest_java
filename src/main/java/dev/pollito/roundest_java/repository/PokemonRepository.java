@@ -2,7 +2,6 @@ package dev.pollito.roundest_java.repository;
 
 import dev.pollito.roundest_java.entity.Pokemon;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

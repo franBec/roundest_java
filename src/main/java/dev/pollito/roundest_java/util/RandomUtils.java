@@ -1,13 +1,12 @@
 package dev.pollito.roundest_java.util;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class RandomUtils {
   private static final int POKEMON_ID_MIN = 1;
@@ -15,7 +14,7 @@ public class RandomUtils {
   private static final int MAX_COUNT = 10;
   private static final Random RANDOM = new Random();
 
-  private RandomUtils(){}
+  private RandomUtils() {}
 
   @Contract("_ -> new")
   public static @NotNull List<Long> generateRandomIds(int count) {

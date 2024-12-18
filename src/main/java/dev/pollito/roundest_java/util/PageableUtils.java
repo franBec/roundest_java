@@ -1,14 +1,13 @@
 package dev.pollito.roundest_java.util;
 
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
-
 public class PageableUtils {
-  private PageableUtils(){}
+  private PageableUtils() {}
 
   public static @NotNull Pageable createPageable(int page, int size, @NotNull List<String> sort) {
     Sort combinedSort = Sort.unsorted();
@@ -16,9 +15,10 @@ public class PageableUtils {
 
     for (String sortField : sort) {
       String[] sortParams = sortField.split(":");
-      Sort.Direction direction = (sortParams.length > 1 && "desc".equalsIgnoreCase(sortParams[1]))
-          ? Sort.Direction.DESC
-          : Sort.Direction.ASC;
+      Sort.Direction direction =
+          (sortParams.length > 1 && "desc".equalsIgnoreCase(sortParams[1]))
+              ? Sort.Direction.DESC
+              : Sort.Direction.ASC;
 
       if ("id".equalsIgnoreCase(sortParams[0])) {
         hasIdSort = true;
