@@ -1,18 +1,18 @@
 plugins {
-    id 'com.diffplug.spotless' version '6.25.0'
+	id 'com.diffplug.spotless' version '6.25.0'
 	id 'java'
-    id 'info.solidsoft.pitest' version '1.15.0'
-    id 'io.spring.dependency-management' version '1.1.6'
-    id 'org.openapi.generator' version '7.10.0'
-    id 'org.springframework.boot' version '3.4.0'
+	id 'info.solidsoft.pitest' version '1.15.0'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.openapi.generator' version '7.10.0'
+	id 'org.springframework.boot' version '3.4.0'
 }
 
 sourceSets {
-    main {
-        java {
-            srcDir(layout.buildDirectory.dir("generated/sources/openapi/src/main/java"))
-        }
-    }
+	main {
+		java {
+			srcDir(layout.buildDirectory.dir("generated/sources/openapi/src/main/java"))
+		}
+	}
 }
 
 group = 'dev.pollito'
@@ -35,77 +35,84 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-    annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'io.micrometer:micrometer-observation:1.14.1'
-    implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.4.0'
-    implementation 'io.swagger.core.v3:swagger-core-jakarta:2.2.26'
-    implementation 'org.aspectj:aspectjtools:1.9.22.1'
-    implementation 'org.jetbrains:annotations:26.0.1'
-    implementation 'org.mapstruct:mapstruct:1.6.3'
-    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'io.micrometer:micrometer-observation:1.14.1'
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel:1.4.0'
+	implementation 'io.swagger.core.v3:swagger-core-jakarta:2.2.26'
+	implementation 'org.aspectj:aspectjtools:1.9.22.1'
+	implementation 'org.jetbrains:annotations:26.0.1'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named("build") {
-    dependsOn 'spotlessApply'
+	dependsOn 'spotlessApply'
+	dependsOn 'spotlessGroovyGradleApply'
 }
 
 tasks.named('compileJava') {
-    dependsOn 'openApiGenerate'
+	dependsOn 'openApiGenerate'
 }
 
 tasks.named('test') {
-    dependsOn 'pitest'
+	dependsOn 'pitest'
 	useJUnitPlatform()
 }
 
 openApiGenerate {
-    apiPackage = "${group}.${project.name}.api".toString()
-    configOptions = [
-    	interfaceOnly: "true",
-    	skipOperationExample: "true",
-    	useEnumCaseInsensitive: "true",
-    	useSpringBoot3: "true"
-    ]
-    generateApiTests = false
-    generateApiDocumentation = false
-    generateModelTests = false
-    generateModelDocumentation = false
-    generatorName = "spring"
-    inputSpec = "$rootDir/src/main/resources/openapi/roundest.yaml".toString()
-    modelPackage = "${group}.${project.name}.model".toString()
-    outputDir = layout.buildDirectory.dir("generated/sources/openapi").get().asFile.toString()
+	apiPackage = "${group}.${project.name}.api".toString()
+	configOptions = [
+		interfaceOnly: "true",
+		skipOperationExample: "true",
+		useEnumCaseInsensitive: "true",
+		useSpringBoot3: "true"
+	]
+	generateApiTests = false
+	generateApiDocumentation = false
+	generateModelTests = false
+	generateModelDocumentation = false
+	generatorName = "spring"
+	inputSpec = "$rootDir/src/main/resources/openapi/roundest.yaml".toString()
+	modelPackage = "${group}.${project.name}.model".toString()
+	outputDir = layout.buildDirectory.dir("generated/sources/openapi").get().asFile.toString()
 }
 
 pitest {
-    junit5PluginVersion = '1.2.1'
-    outputFormats = ['HTML']
-    targetClasses = [
-            "${group}.${project.name}.controller.*".toString(),
-            "${group}.${project.name}.service.*".toString(),
-            "${group}.${project.name}.util.*".toString()
-    ]
-    targetTests = ["${group}.${project.name}.*".toString()]
-    timestampedReports = false
-    useClasspathFile = true
+	junit5PluginVersion = '1.2.1'
+	outputFormats = ['HTML']
+	targetClasses = [
+		"${group}.${project.name}.controller.*".toString(),
+		"${group}.${project.name}.service.*".toString(),
+		"${group}.${project.name}.util.*".toString()
+	]
+	targetTests = [
+		"${group}.${project.name}.*".toString()
+	]
+	timestampedReports = false
+	useClasspathFile = true
 }
 
 spotless {
-    java {
-        target 'src/*/java/**/*.java'
-        googleJavaFormat()
-        removeUnusedImports()
-        cleanthat()
-        formatAnnotations()
-    }
+	java {
+		target 'src/*/java/**/*.java'
+		googleJavaFormat()
+		removeUnusedImports()
+		cleanthat()
+		formatAnnotations()
+	}
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
 }
