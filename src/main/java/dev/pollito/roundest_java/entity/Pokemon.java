@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "pokemons", schema = "dbo")
+@Table(name = "pokemons", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
