@@ -12,12 +12,6 @@ The OpenAPI documentation for the API can be found in the [src/main/resources/op
 
 ## Getting Started
 
-### Prerequisites
-- For running with IntelliJ:
-    - **IntelliJ** (Community Edition works fine)
-- For containerized deployment
-    - **Docker**
-
 ### Run Locally with IntelliJ
 1. Clone the repository:
     ```bash
