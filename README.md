@@ -27,23 +27,9 @@ The OpenAPI documentation for the API can be found in the [src/main/resources/op
 3. Set the environment variable `SPRING_PROFILES_ACTIVE` to `dev` for local development.
 4. Run the application from the IntelliJ run configurations.
 
-### Run with Docker
-1. Clone the repository:
-     ```bash
-     git clone https://github.com/franBec/roundest_java
-     ```
-2. Navigate to the project directory:
-    ```bash
-    cd roundest_java
-    ```
-3. Build the Docker image:
-    ```bash
-    docker build -t roundest_java .
-    ```
-4. Run the Docker container:
-     ```bash
-     docker run -p 8080:8080 roundest_java
-     ```
+### Build for production
+
+This project is meant to be run alongside a database. For a complete setup, use the `docker-compose` configuration provided in the [roundest_docker_compose](https://github.com/franBec/roundest_docker_compose) repository.
 
 ## Author
 Franco Exequiel Becvort <🐤/>
